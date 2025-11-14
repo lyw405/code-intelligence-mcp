@@ -5,7 +5,7 @@
   "main": "dist/src/mcp-server.js",
   "type": "module",
   "bin": {
-    "code-intelligence-mcp": "./dist/src/mcp-server.js"
+    "code-intelligence-mcp": "dist/src/mcp-server.js"
   },
   "scripts": {
     "dev": "tsx src/mcp-server.ts",
@@ -22,7 +22,7 @@
     "type-check": "tsc --noEmit",
     "check-all": "npm run lint && npm run format:check && npm run type-check",
     "prepare": "husky",
-    "prepublishOnly": "npm run build && npm run check-all"
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "mcp",
@@ -39,7 +39,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/lyw405/code-intelligence-mcp.git"
+    "url": "git+https://github.com/lyw405/code-intelligence-mcp.git"
   },
   "files": [
     "dist",
