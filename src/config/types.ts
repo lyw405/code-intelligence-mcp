@@ -31,7 +31,6 @@ export interface AIModelConfig {
   model: string;
   title: string;
   baseURL: string;
-  features: ModelFeature[];
   apiKey: string;
 }
 
@@ -56,8 +55,7 @@ export interface ModelPurposesConfig {
 
 // 完整配置接口
 export interface AIProvidersConfig {
-  defaultModels?: DefaultModelsConfig;
-  modelPurposes?: ModelPurposesConfig;
+  defaultModel?: string;
   providers: AIProviderConfig[];
 }
 

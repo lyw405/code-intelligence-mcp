@@ -1,20 +1,5 @@
 {
-  "defaultModels": {
-    "ANALYSIS": "claude-3-7-sonnet-latest",
-    "DESIGN": "claude-3-7-sonnet-latest",
-    "QUERY": "claude-3-7-sonnet-latest",
-    "INTEGRATION": "claude-3-7-sonnet-latest"
-  },
-  "modelPurposes": {
-    "claude-3-7-sonnet-latest": ["ANALYSIS", "INTEGRATION"],
-    "claude-3-5-sonnet-latest": ["DESIGN", "QUERY"],
-    "claude-3-haiku-latest": ["DESIGN", "QUERY"],
-    "gpt-4o": ["ANALYSIS", "DESIGN", "INTEGRATION"],
-    "gpt-4o-mini": ["QUERY", "DESIGN"],
-    "deepseek-chat": ["DESIGN", "ANALYSIS"],
-    "llama3.2": ["DESIGN", "QUERY"],
-    "qwen2.5": ["DESIGN", "QUERY"]
-  },
+  "defaultModel": "claude-3-7-sonnet-latest",
   "providers": [
     {
       "provider": "anthropic",
@@ -23,21 +8,18 @@
           "model": "claude-3-7-sonnet-latest",
           "title": "Claude 3.7 Sonnet",
           "baseURL": "https://api.302.ai/v1",
-          "features": [],
           "apiKey": "sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
         },
         {
           "model": "claude-3-5-sonnet-latest",
           "title": "Claude 3.5 Sonnet",
           "baseURL": "https://api.302.ai/v1",
-          "features": [],
           "apiKey": "sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
         },
         {
           "model": "claude-3-haiku-latest",
           "title": "Claude 3 Haiku",
           "baseURL": "https://api.302.ai/v1",
-          "features": [],
           "apiKey": "sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
         }
       ]
@@ -49,14 +31,12 @@
           "model": "gpt-4o",
           "title": "GPT-4o",
           "baseURL": "https://api.openai.com/v1",
-          "features": ["vision"],
           "apiKey": "sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
         },
         {
           "model": "gpt-4o-mini",
           "title": "GPT-4o Mini",
           "baseURL": "https://api.openai.com/v1",
-          "features": ["vision"],
           "apiKey": "sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
         }
       ]
@@ -68,7 +48,6 @@
           "model": "deepseek-chat",
           "title": "DeepSeek Chat",
           "baseURL": "https://api.deepseek.com",
-          "features": [],
           "apiKey": "sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
         }
       ]
@@ -80,14 +59,12 @@
           "model": "llama3.2",
           "title": "Llama 3.2",
           "baseURL": "http://localhost:11434",
-          "features": [],
           "apiKey": ""
         },
         {
           "model": "qwen2.5",
           "title": "Qwen 2.5",
           "baseURL": "http://localhost:11434",
-          "features": [],
           "apiKey": ""
         }
       ]

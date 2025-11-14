@@ -1,7 +1,6 @@
-import { getModelInfo, getRecommendedModel } from '@/config/model-manager.js';
-import { ModelPurpose } from '@/config/types.js';
 import { utilityKB } from './utility-knowledge-base.js';
 import { logger } from '@/utils/logger.js';
+import { callAIForJSON } from '@/utils/ai-caller.js';
 import type { AIUtilitySuggestionResult } from '@/types/mcp-types.js';
 
 /**
@@ -14,97 +13,28 @@ export class AIUtilitySuggester {
    */
   async suggest(userPrompt: string): Promise<AIUtilitySuggestionResult> {
     try {
-      logger.info('=== AI Utility Suggester 开始执行 ===');
+      logger.info('=== AI Utility Suggester 开始执行 ===')
       logger.info('用户逻辑需求:', userPrompt);
 
-      // 获取工具方法名称和描述（仅发送给 AI）
+      // 获取工具方法摘要
       const utilitiesSummary = utilityKB.getUtilitiesSummary();
       logger.info(`加载了 ${utilitiesSummary.length} 个工具方法`);
 
-      // 构建系统提示词
-      const systemPrompt = this.buildSystemPrompt();
-
-      // 构建用户消息
-      const userMessage = this.buildUserMessage(userPrompt, utilitiesSummary);
-
-      // 获取推荐的 AI 模型
-      logger.info('正在获取推荐模型...');
-      const modelName = getRecommendedModel(ModelPurpose.DESIGN);
-      logger.info(`使用模型: ${modelName}`);
-
-      // 获取模型配置
-      const modelInfo = getModelInfo(modelName);
-      if (!modelInfo) {
-        throw new Error(`模型配置未找到: ${modelName}`);
-      }
-
-      // 直接使用 fetch 调用 API
-      logger.info('开始调用 AI 生成建议...');
-      logger.info('调用参数:', {
-        modelName,
-        systemPromptLength: systemPrompt.length,
-        userMessageLength: userMessage.length,
+      // 调用 AI
+      const result = await callAIForJSON<AIUtilitySuggestionResult>({
+        systemPrompt: this.buildSystemPrompt(),
+        userPrompt:
+          this.buildUserMessage(userPrompt, utilitiesSummary) +
+          '\n\n请以JSON格式返回，包含suggestedUtilities数组和optimizedPrompt字符串',
       });
-
-      const response = await fetch(`${modelInfo.baseURL}/chat/completions`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${modelInfo.apiKey}`,
-        },
-        body: JSON.stringify({
-          model: modelName,
-          messages: [
-            {
-              role: 'system',
-              content: systemPrompt,
-            },
-            {
-              role: 'user',
-              content:
-                userMessage +
-                '\n\n请以JSON格式返回，包含suggestedUtilities数组和optimizedPrompt字符串',
-            },
-          ],
-          temperature: 0.7,
-        }),
-      });
-
-      if (!response.ok) {
-        const error = await response.text();
-        logger.error('API 调用失败:', error);
-        throw new Error(`API调用失败: ${response.status} - ${error}`);
-      }
-
-      const data = await response.json();
-      logger.info('调用 AI 成功');
-      logger.debug('AI 原始返回:', data);
-
-      const text = data.choices[0].message.content;
-      logger.debug('AI 文本响应:', text);
-
-      // 解析 JSON 响应（处理 Markdown 代码块）
-      let jsonText = text.trim();
-      if (jsonText.startsWith('```')) {
-        // 移除 Markdown 代码块标记
-        jsonText = jsonText
-          .replace(/^```(?:json)?\n/, '')
-          .replace(/\n```$/, '');
-      }
-
-      const parsedResult = JSON.parse(jsonText) as AIUtilitySuggestionResult;
 
       logger.info(
-        `AI 返回 ${parsedResult.suggestedUtilities.length} 个工具方法建议`
+        `AI 返回 ${result.suggestedUtilities.length} 个工具方法建议`
       );
 
-      return parsedResult;
+      return result;
     } catch (error) {
       logger.error('AI 工具方法建议生成失败:', error);
-      if (error instanceof Error) {
-        logger.error('错误消息:', error.message);
-        logger.error('错误堆栈:', error.stack);
-      }
       throw error;
     }
   }

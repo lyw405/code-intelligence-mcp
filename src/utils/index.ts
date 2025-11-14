@@ -3,3 +3,5 @@
  */
 
 export { Logger, LogLevel, logger, createLogger } from './logger.js';
+export { callAI, callAIForJSON } from './ai-caller.js';
+export type { AICallOptions } from './ai-caller.js';

@@ -70,7 +70,8 @@ code-intelligence-mcp/
 │   ├── types/                         # 类型定义
 │   │   └── mcp-types.ts
 │   ├── utils/                         # 工具函数
-│   │   ├── logger.ts
+│   │   ├── logger.ts                  # 日志工具
+│   │   ├── ai-caller.ts               # AI 统一调用工具
 │   │   └── index.ts
 │   └── mcp-server.ts                  # MCP 服务器主入口
 ├── data/                              # 知识库数据
@@ -379,22 +380,50 @@ pnpm start:prod
 
 ```json
 {
-  "models": {
-    "componentSuggestion": {
-      "provider": "openai",
-      "model": "gpt-4o",
-      "apiKey": "your-api-key"
-    },
-    "utilitySuggestion": {
+  "defaultModel": "claude-3-7-sonnet-latest",
+  "providers": [
+    {
       "provider": "anthropic",
-      "model": "claude-3-5-sonnet-20241022",
-      "apiKey": "your-api-key"
+      "models": [
+        {
+          "model": "claude-3-7-sonnet-latest",
+          "title": "Claude 3.7 Sonnet",
+          "baseURL": "https://api.302.ai/v1",
+          "apiKey": "your-api-key"
+        }
+      ]
+    },
+    {
+      "provider": "openai",
+      "models": [
+        {
+          "model": "gpt-4o",
+          "title": "GPT-4o",
+          "baseURL": "https://api.openai.com/v1",
+          "apiKey": "your-api-key"
+        }
+      ]
     }
-  }
+  ]
 }
 ```
 
-支持的 provider：`openai`、`anthropic`、`deepseek`
+**配置说明：**
+
+- `defaultModel`: 默认使用的模型名称，必须存在于 `providers` 中
+- `providers`: 支持的 AI 提供商列表
+  - `provider`: 提供商类型 (`anthropic`、`openai`、`deepseek`、`ollama`)
+  - `models`: 该提供商下的模型配置列表
+    - `model`: 模型名称（必须与 `defaultModel` 匹配）
+    - `title`: 模型显示名称
+    - `baseURL`: API 端点地址
+    - `apiKey`: API 密钥
+
+**支持的提供商：**
+- `anthropic` - Claude 系列模型
+- `openai` - GPT 系列模型
+- `deepseek` - DeepSeek 国产模型
+- `ollama` - 本地模型
 
 ### 3. 知识库数据
 
