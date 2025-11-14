@@ -1,0 +1,22 @@
+{
+  "ComponentName": {
+    "description": "能力：组件功能描述；特性：组件特点说明。",
+    "import": "import ComponentName from 'components/ComponentName'",
+    "relativePath": "your-component-library/src/components/ComponentName"
+  },
+  "ExampleButton": {
+    "description": "能力：提供按钮交互；特性：支持多种样式、尺寸与禁用状态。",
+    "import": "import ExampleButton from 'components/ExampleButton'",
+    "relativePath": "your-component-library/src/components/ExampleButton"
+  },
+  "ExampleForm": {
+    "description": "能力：表单数据收集；特性：支持校验、布局配置与动态表单项。",
+    "import": "import ExampleForm from 'components/ExampleForm'",
+    "relativePath": "your-component-library/src/components/ExampleForm"
+  },
+  "ExampleTable": {
+    "description": "能力：数据列表展示；特性：支持分页、排序、筛选与行选择。",
+    "import": "import ExampleTable from 'components/ExampleTable'",
+    "relativePath": "your-component-library/src/components/ExampleTable"
+  }
+}

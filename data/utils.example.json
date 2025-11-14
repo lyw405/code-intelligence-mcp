@@ -1,0 +1,37 @@
+{
+  "formatNumber": {
+    "description": "能力：数字格式化展示；特性：千分位分隔符展示，自动处理 NaN 返回 0。",
+    "import": "import { formatNumber } from 'utils/format'",
+    "relativePath": "your-utils-library/src/utils/format.js",
+    "params": "n: number | string - 需要格式化的数字",
+    "returns": "string - 格式化后的数字字符串，如 '1,000'"
+  },
+  "formatDate": {
+    "description": "能力：日期格式化；特性：支持多种日期格式输出，自动处理时间戳。",
+    "import": "import { formatDate } from 'utils/format'",
+    "relativePath": "your-utils-library/src/utils/format.js",
+    "params": "date: Date | number | string - 日期对象或时间戳; format?: string - 格式字符串，默认 'YYYY-MM-DD HH:mm:ss'",
+    "returns": "string - 格式化后的日期字符串"
+  },
+  "debounce": {
+    "description": "能力：函数防抖；特性：延迟执行函数，频繁调用时重新计时。",
+    "import": "import { debounce } from 'utils/performance'",
+    "relativePath": "your-utils-library/src/utils/performance.js",
+    "params": "fn: function - 需要防抖的函数; wait: number - 延迟毫秒数",
+    "returns": "function - 防抖后的函数"
+  },
+  "validateEmail": {
+    "description": "能力：邮箱地址校验；特性：正则校验是否为有效邮箱格式。",
+    "import": "import { validateEmail } from 'utils/validator'",
+    "relativePath": "your-utils-library/src/utils/validator.js",
+    "params": "email: string - 邮箱地址字符串",
+    "returns": "boolean - 是否为有效邮箱"
+  },
+  "deepClone": {
+    "description": "能力：深拷贝对象；特性：递归复制对象所有层级，避免引用传递。",
+    "import": "import { deepClone } from 'utils/object'",
+    "relativePath": "your-utils-library/src/utils/object.js",
+    "params": "obj: any - 需要深拷贝的对象",
+    "returns": "any - 深拷贝后的新对象"
+  }
+}

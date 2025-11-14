@@ -1,0 +1,70 @@
+{
+  "name": "code-intelligence-mcp",
+  "version": "1.0.0",
+  "description": "MCP Service for Intelligent Code Suggestion - Components and Utilities Recommendation",
+  "main": "dist/src/mcp-server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx src/mcp-server.ts",
+    "mcp:dev": "tsx src/mcp-server.ts",
+    "build": "tsc --project tsconfig.json && tsc-alias",
+    "clean": "rm -rf dist/",
+    "rebuild": "npm run clean && npm run build",
+    "start": "tsx src/mcp-server.ts",
+    "start:prod": "node dist/src/mcp-server.js",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "format": "prettier --write src/**/*.ts",
+    "format:check": "prettier --check src/**/*.ts",
+    "type-check": "tsc --noEmit",
+    "check-all": "npm run lint && npm run format:check && npm run type-check",
+    "prepare": "husky"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "ai",
+    "code-intelligence",
+    "prompt-redesign",
+    "typescript"
+  ],
+  "author": "GarenCode Team",
+  "license": "MIT",
+  "dependencies": {
+    "@ai-sdk/anthropic": "^2.0.43",
+    "@ai-sdk/deepseek": "^1.0.27",
+    "@ai-sdk/openai": "^2.0.64",
+    "@modelcontextprotocol/sdk": "^1.0.3",
+    "ai": "^5.0.90",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.0",
+    "@typescript-eslint/eslint-plugin": "^8.46.3",
+    "@typescript-eslint/parser": "^8.46.3",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-config-typescript": "^3.0.0",
+    "eslint-plugin-prettier": "^5.5.4",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.5",
+    "prettier": "^3.0.0",
+    "tsc-alias": "^1.8.16",
+    "tsconfig-paths": "^4.2.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{js,json,md}": [
+      "prettier --write"
+    ]
+  },
+  "packageManager": "pnpm@10.11.1"
+}
