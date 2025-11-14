@@ -13,7 +13,7 @@ export class AIUtilitySuggester {
    */
   async suggest(userPrompt: string): Promise<AIUtilitySuggestionResult> {
     try {
-      logger.info('=== AI Utility Suggester 开始执行 ===')
+      logger.info('=== AI Utility Suggester 开始执行 ===');
       logger.info('用户逻辑需求:', userPrompt);
 
       // 获取工具方法摘要
@@ -28,9 +28,7 @@ export class AIUtilitySuggester {
           '\n\n请以JSON格式返回，包含suggestedUtilities数组和optimizedPrompt字符串',
       });
 
-      logger.info(
-        `AI 返回 ${result.suggestedUtilities.length} 个工具方法建议`
-      );
+      logger.info(`AI 返回 ${result.suggestedUtilities.length} 个工具方法建议`);
 
       return result;
     } catch (error) {

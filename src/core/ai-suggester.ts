@@ -13,7 +13,7 @@ export class AISuggester {
    */
   async suggest(userPrompt: string): Promise<AISuggestionResult> {
     try {
-      logger.info('=== AI Suggester 开始执行 ===')
+      logger.info('=== AI Suggester 开始执行 ===');
       logger.info('用户提示词:', userPrompt);
 
       // 获取组件摘要

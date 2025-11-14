@@ -1,367 +1,375 @@
 # Code Intelligence MCP
 
-智能代码建议 MCP 服务，为 AI IDE 提供组件与工具方法的智能推荐能力。
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](https://nodejs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue)](https://www.typescriptlang.org/)
+[![pnpm](https://img.shields.io/badge/pnpm-10.x-orange)](https://pnpm.io/)
 
-## 项目简介
+[English](./README.md) | [中文](./README.zh-CN.md)
 
-本项目是一个基于 Model Context Protocol (MCP) 的智能代码建议服务，通过 AI 分析用户需求，从私有代码库中推荐最合适的组件和工具方法，帮助开发者提高代码复用率和开发效率。
+Intelligent code suggestion MCP service that provides AI-powered component and utility method recommendations for AI IDEs.
 
-### 核心能力
+## Introduction
 
-**🎨 UI 组件智能推荐**
+This is an intelligent code suggestion service based on Model Context Protocol (MCP). It analyzes user requirements through AI and recommends the most suitable components and utility methods from private code repositories, helping developers improve code reuse and development efficiency.
 
-- 分析 UI 开发需求（页面、表单、界面等）
-- 从组件知识库中匹配最相关的私有组件
-- 生成包含组件引入和使用方式的优化提示词
-- 提供完整的实现指南和代码示例
+### Core Capabilities
 
-**🔧 工具方法智能推荐**
+**🎨 UI Component Intelligent Recommendation**
 
-- 分析逻辑功能需求（数据处理、格式转换、工具函数等）
-- 从方法知识库中查找可复用的工具方法
-- 生成包含方法引入和调用方式的优化提示词
-- 避免重复造轮子，提升代码质量
+- Analyze UI development requirements (pages, forms, interfaces, etc.)
+- Match the most relevant private components from the knowledge base
+- Generate optimized prompts with component imports and usage
+- Provide complete implementation guides and code examples
 
-## 功能特性
+**🔧 Utility Method Intelligent Recommendation**
 
-### 智能分析引擎
+- Analyze logic function requirements (data processing, format conversion, utility functions, etc.)
+- Find reusable utility methods from the method knowledge base
+- Generate optimized prompts with method imports and invocation
+- Avoid reinventing the wheel and improve code quality
 
-- **需求理解**：基于 AI 深度理解用户开发意图
-- **关键词提取**：自动识别需求中的核心要素
-- **复杂度评估**：智能评估实现难度和组件适配度
+## Features
 
-### 知识库管理
+### Intelligent Analysis Engine
 
-- **组件知识库**：管理私有 UI 组件库（props、events、slots、示例）
-- **方法知识库**：管理工具方法库（参数、返回值、类型、用法）
-- **相关性算法**：基于语义匹配计算推荐评分
+- **Requirement Understanding**: Deep understanding of user development intentions based on AI
+- **Keyword Extraction**: Automatically identify core elements in requirements
+- **Complexity Assessment**: Intelligently evaluate implementation difficulty and component fit
 
-### 提示词优化
+### Knowledge Base Management
 
-- **双向优化**：支持组件和方法两种场景的提示词重设计
-- **结构化输出**：生成包含引入语句、实现步骤的完整方案
-- **最佳实践**：融入代码规范和使用建议
+- **Component Knowledge Base**: Manage private UI component library (props, events, slots, examples)
+- **Method Knowledge Base**: Manage utility method library (parameters, return values, types, usage)
+- **Relevance Algorithm**: Calculate recommendation scores based on semantic matching
 
-## 项目结构
+### Prompt Optimization
+
+- **Bidirectional Optimization**: Support prompt redesign for both component and method scenarios
+- **Structured Output**: Generate complete solutions including import statements and implementation steps
+- **Best Practices**: Integrate code standards and usage recommendations
+
+## Project Structure
 
 ```
 code-intelligence-mcp/
 ├── src/
-│   ├── core/                          # 核心功能模块
-│   │   ├── knowledge-base.ts          # 组件知识库管理
-│   │   ├── utility-knowledge-base.ts  # 工具方法知识库管理
-│   │   ├── prompt-redesigner.ts       # UI 组件提示词重设计
-│   │   ├── logic-prompt-redesigner.ts # 逻辑方法提示词重设计
-│   │   ├── ai-suggester.ts            # AI 组件推荐引擎
-│   │   ├── ai-utility-suggester.ts    # AI 方法推荐引擎
+│   ├── core/                          # Core functional modules
+│   │   ├── knowledge-base.ts          # Component knowledge base management
+│   │   ├── utility-knowledge-base.ts  # Utility method knowledge base management
+│   │   ├── prompt-redesigner.ts       # UI component prompt redesign
+│   │   ├── logic-prompt-redesigner.ts # Logic method prompt redesign
+│   │   ├── ai-suggester.ts            # AI component recommendation engine
+│   │   ├── ai-utility-suggester.ts    # AI method recommendation engine
 │   │   └── index.ts
-│   ├── config/                        # 配置管理
-│   │   ├── model-manager.ts           # AI 模型管理器
-│   │   ├── ai-client-adapter.ts       # AI 客户端适配器
-│   │   ├── types.ts                   # 配置类型定义
+│   ├── config/                        # Configuration management
+│   │   ├── model-manager.ts           # AI model manager
+│   │   ├── ai-client-adapter.ts       # AI client adapter
+│   │   ├── types.ts                   # Configuration type definitions
 │   │   └── index.ts
-│   ├── tools/                         # MCP 工具定义
-│   │   ├── suggestion.ts              # 组件建议工具
-│   │   ├── utility-suggestion.ts      # 方法建议工具
-│   │   ├── query.ts                   # 查询工具
+│   ├── tools/                         # MCP tool definitions
+│   │   ├── suggestion.ts              # Component suggestion tool
+│   │   ├── utility-suggestion.ts      # Method suggestion tool
+│   │   ├── query.ts                   # Query tool
 │   │   └── index.ts
-│   ├── resources/                     # MCP 资源定义
+│   ├── resources/                     # MCP resource definitions
 │   │   └── index.ts
-│   ├── types/                         # 类型定义
+│   ├── types/                         # Type definitions
 │   │   └── mcp-types.ts
-│   ├── utils/                         # 工具函数
-│   │   ├── logger.ts                  # 日志工具
-│   │   ├── ai-caller.ts               # AI 统一调用工具
+│   ├── utils/                         # Utility functions
+│   │   ├── logger.ts                  # Logger utility
+│   │   ├── ai-caller.ts               # AI unified caller
 │   │   └── index.ts
-│   └── mcp-server.ts                  # MCP 服务器主入口
-├── data/                              # 知识库数据
-│   ├── components.json                # UI 组件知识库
-│   ├── utils.json                     # 工具方法知识库
-│   └── config.json                    # AI 模型配置
-├── scripts/                           # 脚本工具
-│   ├── start.sh                       # 启动脚本
-│   ├── test.js                        # 测试脚本
-│   └── test-*.ts                      # 功能测试
+│   └── mcp-server.ts                  # MCP server main entry
+├── data/                              # Knowledge base data
+│   ├── components.json                # UI component knowledge base
+│   ├── utils.json                     # Utility method knowledge base
+│   └── config.json                    # AI model configuration
+├── scripts/                           # Script tools
+│   ├── start.sh                       # Startup script
+│   ├── test.js                        # Test script
+│   └── test-*.ts                      # Feature tests
 ├── package.json
 ├── tsconfig.json
-└── mcp-config.json                    # MCP 服务配置
+└── mcp-config.json                    # MCP service configuration
 ```
 
-## 安装和使用
+## Installation and Usage
 
-### 前置准备
+### Prerequisites
 
-**配置知识库数据文件**
+**Configure Knowledge Base Data Files**
 
-项目需要手动配置以下数据文件：
+The project requires manual configuration of the following data files:
 
-1. **`data/config.json`** - AI 模型配置（包含 API Key）
+1. **`data/config.json`** - AI model configuration (including API Key)
 
    ```bash
    cp data/config.example.json data/config.json
-   # 编辑 config.json，填入你的 API Key
+   # Edit config.json and fill in your API Key
    ```
 
-2. **`data/components.json`** - UI 组件知识库
+2. **`data/components.json`** - UI component knowledge base
 
    ```bash
    cp data/components.example.json data/components.json
-   # 编辑 components.json，根据你的私有组件库配置组件信息
+   # Edit components.json based on your private component library
    ```
 
-   - 参考现有格式添加组件的 `description`、`import`、`relativePath` 等字段
+   - Add component information following the existing format: `description`, `import`, `relativePath`, etc.
 
-3. **`data/utils.json`** - 工具方法知识库
+3. **`data/utils.json`** - Utility method knowledge base
+
    ```bash
    cp data/utils.example.json data/utils.json
-   # 编辑 utils.json，根据你的工具方法库配置方法信息
+   # Edit utils.json based on your utility method library
    ```
 
-   - 包含方法的 `description`、`import`、`params`、`returns` 等字段
+   - Include method information: `description`, `import`, `params`, `returns`, etc.
 
-**说明：**
+**Note:**
 
-- `config.json` 包含敏感信息（API Key），已添加到 `.gitignore`，不会提交到版本库
-- `components.json` 和 `utils.json` 需要根据你的实际代码库进行配置
-- 可以参考示例文件 `config.example.json` 了解配置格式
+- `config.json` contains sensitive information (API Key) and is added to `.gitignore`, will not be committed to the repository
+- `components.json` and `utils.json` need to be configured based on your actual code repository
+- Refer to example files like `config.example.json` for configuration format
 
-### 安装依赖
+### Install Dependencies
 
 ```bash
 pnpm install
 ```
 
-### 开发模式运行
+### Development Mode
 
 ```bash
 pnpm dev
 ```
 
-### 构建
+### Build
 
 ```bash
 pnpm build
 ```
 
-### 生产模式运行
+### Production Mode
 
 ```bash
 pnpm start:prod
 ```
 
-## MCP 工具说明
+## MCP Tools
 
-### 🎨 UI 组件建议工具
+### 🎨 UI Component Suggestion Tools
 
 #### 1. suggest_components
 
-智能分析 UI 开发需求，推荐最合适的私有组件。
+Intelligently analyze UI development requirements and recommend the most suitable private components.
 
-**使用场景：**
+**Use Cases:**
 
-- 创建页面、表单、界面等 UI 功能
-- 需要使用私有组件库快速开发
-- 希望获得完整的实现方案
+- Create pages, forms, interfaces and other UI features
+- Quick development using private component library
+- Get complete implementation solutions
 
-**输入参数：**
+**Input Parameters:**
 
 ```typescript
 {
-  prompt: string; // 用户需求描述，如 "创建用户登录页面"
+  prompt: string; // User requirement description, e.g. "Create user login page"
 }
 ```
 
-**输出内容：**
+**Output:**
 
-- **需求分析**：关键词、组件类型、复杂度评估
-- **推荐组件**：组件列表 + 相关性评分 + 推荐理由
-- **优化提示词**：包含具体组件引入和使用方式
-- **实现指南**：分步骤的开发建议
+- **Requirement Analysis**: Keywords, component types, complexity assessment
+- **Suggested Components**: Component list + relevance score + recommendation reason
+- **Optimized Prompt**: Including specific component imports and usage
+- **Implementation Guide**: Step-by-step development suggestions
 
-**示例：**
+**Example:**
 
 ```json
-// 输入
-{"prompt": "生成一个用户信息编辑表单"}
+// Input
+{"prompt": "Generate a user information edit form"}
 
-// 输出
+// Output
 {
   "analysis": {
-    "keywords": ["表单", "编辑", "用户信息"],
+    "keywords": ["form", "edit", "user information"],
     "componentTypes": ["form", "input", "button"]
   },
   "suggestedComponents": [
     {
       "name": "das-form",
       "relevance": 0.95,
-      "reason": "最适合用户信息编辑场景"
+      "reason": "Most suitable for user information editing scenarios"
     }
   ],
-  "redesignedPrompt": "使用 das-form 组件创建...",
-  "implementationGuide": "1. 引入组件...\n2. 配置表单字段..."
+  "redesignedPrompt": "Create using das-form component...",
+  "implementationGuide": "1. Import component...\n2. Configure form fields..."
 }
 ```
 
 #### 2. query_component
 
-查询指定组件的详细信息。
+Query detailed information of a specific component.
 
-**输入参数：**
+**Input Parameters:**
 
 ```typescript
 {
-  componentName: string; // 组件名称，如 "das-button"
+  componentName: string; // Component name, e.g. "das-button"
 }
 ```
 
-**输出内容：**
+**Output:**
 
-- 组件描述、分类、标签
-- Props 参数列表
-- Events 事件列表
-- Slots 插槽说明
-- 使用示例代码
-- 引入路径
+- Component description, category, tags
+- Props parameter list
+- Events list
+- Slots description
+- Usage example code
+- Import path
 
 ---
 
-### 🔧 工具方法建议工具
+### 🔧 Utility Method Suggestion Tools
 
 #### 1. suggest_utilities
 
-智能分析逻辑开发需求，推荐可复用的工具方法。
+Intelligently analyze logic development requirements and recommend reusable utility methods.
 
-**使用场景：**
+**Use Cases:**
 
-- 实现数据处理、格式转换功能
-- 需要加密、校验等工具函数
-- 希望避免重复造轮子
+- Implement data processing and format conversion functions
+- Need encryption, validation and other utility functions
+- Avoid reinventing the wheel
 
-**输入参数：**
+**Input Parameters:**
 
 ```typescript
 {
-  prompt: string; // 逻辑需求描述，如 "需要格式化数字为千分位"
+  prompt: string; // Logic requirement description, e.g. "Need to format numbers with thousand separators"
 }
 ```
 
-**输出内容：**
+**Output:**
 
-- **需求分析**：关键功能点、方法类型
-- **推荐方法**：方法列表 + 相关性评分 + 推荐理由
-- **优化提示词**：包含方法引入和调用方式
-- **实现指南**：使用步骤和注意事项
+- **Requirement Analysis**: Key function points, method types
+- **Suggested Methods**: Method list + relevance score + recommendation reason
+- **Optimized Prompt**: Including method imports and invocation
+- **Implementation Guide**: Usage steps and notes
 
-**示例：**
+**Example:**
 
 ```json
-// 输入
-{"prompt": "实现密码加密功能"}
+// Input
+{"prompt": "Implement password encryption function"}
 
-// 输出
+// Output
 {
   "analysis": {
-    "keywords": ["加密", "密码", "安全"],
+    "keywords": ["encryption", "password", "security"],
     "methodTypes": ["encryption", "security"]
   },
   "suggestedUtilities": [
     {
       "name": "encryptPassword",
       "relevance": 0.98,
-      "reason": "提供 MD5/SHA256 密码加密"
+      "reason": "Provides MD5/SHA256 password encryption"
     }
   ],
-  "redesignedPrompt": "使用 encryptPassword 方法...",
-  "implementationGuide": "1. 引入方法...\n2. 调用加密..."
+  "redesignedPrompt": "Use encryptPassword method...",
+  "implementationGuide": "1. Import method...\n2. Call encryption..."
 }
 ```
 
 #### 2. query_utility
 
-查询指定工具方法的详细信息。
+Query detailed information of a specific utility method.
 
-**输入参数：**
+**Input Parameters:**
 
 ```typescript
 {
-  utilityName: string; // 方法名称，如 "formatNumber"
+  utilityName: string; // Method name, e.g. "formatNumber"
 }
 ```
 
-**输出内容：**
+**Output:**
 
-- 方法描述、分类、类型
-- 参数列表（参数名、类型、说明）
-- 返回值类型和说明
-- 使用示例代码
-- 引入路径
+- Method description, category, type
+- Parameter list (parameter name, type, description)
+- Return value type and description
+- Usage example code
+- Import path
 
-## MCP 资源
+## MCP Resources
 
 ### code-intelligence://component-library
 
-**组件库资源**
+**Component Library Resource**
 
-提供完整的私有组件库信息，包括：
+Provides complete private component library information, including:
 
-- 所有可用组件列表
-- 组件分类和标签
-- 组件能力概览
+- List of all available components
+- Component categories and tags
+- Component capability overview
 
 ### code-intelligence://utility-library
 
-**工具方法库资源**
+**Utility Method Library Resource**
 
-提供完整的工具方法库信息，包括：
+Provides complete utility method library information, including:
 
-- 所有可用方法列表
-- 方法分类和功能
-- 方法能力概览
+- List of all available methods
+- Method categories and functions
+- Method capability overview
 
 ### code-intelligence://usage-guide
 
-**使用指南资源**
+**Usage Guide Resource**
 
-包含：
+Includes:
 
-- MCP 工具使用说明
-- 最佳实践建议
-- 常见问题解答
-- 集成配置指南
+- MCP tools usage instructions
+- Best practice recommendations
+- FAQs
+- Integration configuration guide
 
-## 技术栈
+## Tech Stack
 
-**核心框架**
+**Core Framework**
 
-- **TypeScript** - 类型安全开发
-- **Node.js** - 运行时环境
-- **MCP SDK** (@modelcontextprotocol/sdk) - Model Context Protocol 实现
+- **TypeScript** - Type-safe development
+- **Node.js** - Runtime environment
+- **MCP SDK** (@modelcontextprotocol/sdk) - Model Context Protocol implementation
 
-**AI 集成**
+**AI Integration**
 
-- **Vercel AI SDK** - 统一 AI 接口
-- **OpenAI** - GPT 系列模型支持
-- **Anthropic** - Claude 系列模型支持
-- **DeepSeek** - 国产大模型支持
+- **Vercel AI SDK** - Unified AI interface
+- **OpenAI** - GPT series model support
+- **Anthropic** - Claude series model support
+- **DeepSeek** - Domestic large model support
 
-**开发工具**
+**Development Tools**
 
-- **pnpm** - 包管理器
-- **tsx** - TypeScript 执行器
-- **ESLint + Prettier** - 代码规范
+- **pnpm** - Package manager
+- **tsx** - TypeScript executor
+- **ESLint + Prettier** - Code standards
 - **Husky** - Git hooks
 
-## 开发规范
+## Development Standards
 
-- 使用 TypeScript 进行类型安全开发
-- 遵循 ESLint 和 Prettier 代码规范
-- 使用 Husky 进行 Git hooks 管理
+- Use TypeScript for type-safe development
+- Follow ESLint and Prettier code standards
+- Use Husky for Git hooks management
 
-## 配置说明
+## Configuration
 
-### 1. MCP 服务配置（mcp-config.json）
+### 1. MCP Service Configuration (mcp-config.json)
 
-在 AI IDE 中注册 MCP 服务：
+Register MCP service in AI IDE:
 
 ```json
 {
@@ -374,9 +382,9 @@ pnpm start:prod
 }
 ```
 
-### 2. AI 模型配置（data/config.json）
+### 2. AI Model Configuration (data/config.json)
 
-配置 AI 推荐引擎使用的模型：
+Configure AI models used by the recommendation engine:
 
 ```json
 {
@@ -408,35 +416,36 @@ pnpm start:prod
 }
 ```
 
-**配置说明：**
+**Configuration Description:**
 
-- `defaultModel`: 默认使用的模型名称，必须存在于 `providers` 中
-- `providers`: 支持的 AI 提供商列表
-  - `provider`: 提供商类型 (`anthropic`、`openai`、`deepseek`、`ollama`)
-  - `models`: 该提供商下的模型配置列表
-    - `model`: 模型名称（必须与 `defaultModel` 匹配）
-    - `title`: 模型显示名称
-    - `baseURL`: API 端点地址
-    - `apiKey`: API 密钥
+- `defaultModel`: Default model name to use, must exist in `providers`
+- `providers`: List of supported AI providers
+  - `provider`: Provider type (`anthropic`, `openai`, `deepseek`, `ollama`)
+  - `models`: List of model configurations for this provider
+    - `model`: Model name (must match `defaultModel`)
+    - `title`: Model display name
+    - `baseURL`: API endpoint address
+    - `apiKey`: API key
 
-**支持的提供商：**
-- `anthropic` - Claude 系列模型
-- `openai` - GPT 系列模型
-- `deepseek` - DeepSeek 国产模型
-- `ollama` - 本地模型
+**Supported Providers:**
 
-### 3. 知识库数据
+- `anthropic` - Claude series models
+- `openai` - GPT series models
+- `deepseek` - DeepSeek domestic models
+- `ollama` - Local models
 
-#### 组件知识库（data/components.json）
+### 3. Knowledge Base Data
+
+#### Component Knowledge Base (data/components.json)
 
 ```json
 {
   "components": [
     {
       "name": "das-button",
-      "description": "按钮组件",
-      "category": "基础组件",
-      "tags": ["按钮", "交互"],
+      "description": "Button component",
+      "category": "Basic component",
+      "tags": ["button", "interaction"],
       "props": [...],
       "events": [...],
       "example": "..."
@@ -445,15 +454,15 @@ pnpm start:prod
 }
 ```
 
-#### 工具方法知识库（data/utils.json）
+#### Utility Method Knowledge Base (data/utils.json)
 
 ```json
 {
   "utilities": [
     {
       "name": "formatNumber",
-      "description": "格式化数字为千分位",
-      "category": "格式化",
+      "description": "Format number with thousand separators",
+      "category": "Formatting",
       "type": "formatter",
       "params": [...],
       "returns": {...},
@@ -466,3 +475,11 @@ pnpm start:prod
 ## License
 
 MIT
+
+## Contributing
+
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to contribute to this project.
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for version history and release notes.

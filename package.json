@@ -25,11 +25,22 @@
     "model-context-protocol",
     "ai",
     "code-intelligence",
+    "code-suggestion",
+    "component-recommendation",
     "prompt-redesign",
+    "ai-assistant",
     "typescript"
   ],
   "author": "GarenCode Team",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lyw405/code-intelligence-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lyw405/code-intelligence-mcp/issues"
+  },
+  "homepage": "https://github.com/lyw405/code-intelligence-mcp#readme",
   "dependencies": {
     "@ai-sdk/anthropic": "^2.0.43",
     "@ai-sdk/deepseek": "^1.0.27",
