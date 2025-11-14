@@ -19,6 +19,7 @@ import { readFileSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
+import type { LanguageModel } from 'ai';
 import { AIProvider, AIModelConfig, AIProvidersConfig } from './types.js';
 import { createLogger } from '../utils/logger.js';
 import { resolveConfigPath } from '../utils/path-utils.js';
@@ -137,7 +138,7 @@ export function findModelConfig(
 /**
  * 创建AI客户端
  */
-export function getAIClient(provider: AIProvider, modelName: string) {
+export function getAIClient(provider: AIProvider, modelName: string): LanguageModel {
   const modelConfig = findModelConfig(provider, modelName);
 
   logger.info(`Creating ${provider} client for model: ${modelName}`);
@@ -200,7 +201,7 @@ export function getAIClient(provider: AIProvider, modelName: string) {
 /**
  * Automatically detect provider and create client based on model name
  */
-export function getAIClientByModelName(modelName: string) {
+export function getAIClientByModelName(modelName: string): LanguageModel {
   const config = loadAIProvidersConfig();
 
   // Find model in all providers

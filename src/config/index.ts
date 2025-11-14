@@ -9,9 +9,8 @@ export {
 
 // Model management
 export {
-  getRecommendedModel,
-  getAvailableModels,
-  validateModel,
+  getDefaultModel,
+  getModelConfig,
   getModelInfo,
   getProviderByModel,
 } from './model-manager.js';
