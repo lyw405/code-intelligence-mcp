@@ -79,49 +79,108 @@ code-intelligence-mcp/
 │   ├── utils/                         # 工具函数
 │   │   ├── logger.ts                  # 日志工具
 │   │   ├── ai-caller.ts               # AI 统一调用工具
+│   │   ├── path-utils.ts              # 路径解析工具
 │   │   └── index.ts
 │   └── mcp-server.ts                  # MCP 服务器主入口
-├── data/                              # 知识库数据
-│   ├── components.json                # UI 组件知识库
-│   ├── utils.json                     # 工具方法知识库
-│   └── config.json                    # AI 模型配置
+├── ci-mcp-data/                       # 配置数据（用户私有）
+│   ├── components.example.json        # UI 组件知识库示例
+│   ├── utils.example.json             # 工具方法知识库示例
+│   └── config.example.json            # AI 模型配置示例
 ├── scripts/                           # 脚本工具
-│   ├── start.sh                       # 启动脚本
-│   ├── test.js                        # 测试脚本
-│   └── test-*.ts                      # 功能测试
+│   ├── setup.js                       # 初始化脚本
+│   └── start.sh                       # 启动脚本
 ├── package.json
 ├── tsconfig.json
-└── mcp-config.json                    # MCP 服务配置
+└── .npmignore                         # NPM 发布排除配置
 ```
 
 ## 安装和使用
 
-### 前置准备
+### 方式一：使用 npx（推荐）
+
+这是在 AI IDE（如 Claude Desktop）中使用 MCP 服务的推荐方式。
+
+#### 步骤 1：准备配置文件
+
+创建配置目录（推荐位置：`~/.config/ci-mcp`）：
+
+```bash
+mkdir -p ~/.config/ci-mcp
+```
+
+下载或创建以下三个配置文件：
+
+1. **[`config.json`](./ci-mcp-data/config.example.json)** - AI 模型配置
+2. **[`components.json`](./ci-mcp-data/components.example.json)** - UI 组件知识库
+3. **[`utils.json`](./ci-mcp-data/utils.example.json)** - 工具方法知识库
+
+你可以从 npm 包或仓库中找到示例文件。
+
+#### 步骤 2：配置 AI IDE
+
+在 AI IDE 配置文件中添加（如 Claude Desktop 的 `claude_desktop_config.json`）：
+
+```json
+{
+  "mcpServers": {
+    "code-intelligence": {
+      "command": "npx",
+      "args": ["-y", "code-intelligence-mcp"],
+      "env": {
+        "CI_MCP_DATA_DIR": "~/.config/ci-mcp"
+      }
+    }
+  }
+}
+```
+
+**环境变量说明：**
+
+- **`CI_MCP_DATA_DIR`**（推荐）：指定配置目录，所有三个文件将从该目录加载
+- **`CI_MCP_CONFIG`**：直接指定 `config.json` 的路径
+- **`CI_MCP_COMPONENTS`**：直接指定 `components.json` 的路径
+- **`CI_MCP_UTILS`**：直接指定 `utils.json` 的路径
+
+**支持的路径格式：**
+
+- 绝对路径：`/Users/xxx/.config/ci-mcp`
+- 主目录：`~/.config/ci-mcp` 或 `$HOME/.config/ci-mcp`
+- 环境变量：`${MY_CONFIG_DIR}/ci-mcp`
+
+#### 步骤 3：重启 AI IDE
+
+重启你的 AI IDE（如 Claude Desktop），MCP 服务将通过 npx 自动启动。
+
+---
+
+### 方式二：本地开发
+
+#### 前置准备
 
 **配置知识库数据文件**
 
-项目需要手动配置以下数据文件：
+项目需要在 `ci-mcp-data/` 目录中手动配置以下数据文件：
 
-1. **`data/config.json`** - AI 模型配置（包含 API Key）
+1. **`ci-mcp-data/config.json`** - AI 模型配置（包含 API Key）
 
    ```bash
-   cp data/config.example.json data/config.json
+   cp ci-mcp-data/config.example.json ci-mcp-data/config.json
    # 编辑 config.json，填入你的 API Key
    ```
 
-2. **`data/components.json`** - UI 组件知识库
+2. **`ci-mcp-data/components.json`** - UI 组件知识库
 
    ```bash
-   cp data/components.example.json data/components.json
+   cp ci-mcp-data/components.example.json ci-mcp-data/components.json
    # 编辑 components.json，根据你的私有组件库配置组件信息
    ```
 
    - 参考现有格式添加组件的 `description`、`import`、`relativePath` 等字段
 
-3. **`data/utils.json`** - 工具方法知识库
+3. **`ci-mcp-data/utils.json`** - 工具方法知识库
 
    ```bash
-   cp data/utils.example.json data/utils.json
+   cp ci-mcp-data/utils.example.json ci-mcp-data/utils.json
    # 编辑 utils.json，根据你的工具方法库配置方法信息
    ```
 

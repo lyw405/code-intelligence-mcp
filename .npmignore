@@ -1,0 +1,77 @@
+# Source files (compiled to dist/)
+src/
+
+# Development files
+*.dev.ts
+*.test.ts
+*.spec.ts
+
+# Build artifacts (unless kept)
+tsconfig.json
+tsconfig-paths.json
+tsc-alias.json
+
+# Development dependencies
+.eslintrc.cjs
+.prettierrc
+.prettierignore
+
+# Development tools
+.husky/
+.git/
+.gitignore
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Test and coverage
+coverage/
+.nyc_output/
+test/
+__tests__/
+
+# Temporary files
+tmp/
+temp/
+.env
+.env.local
+.env.*.local
+
+# User configuration files (not examples)
+ci-mcp-data/config.json
+ci-mcp-data/components.json
+ci-mcp-data/utils.json
+
+# Package lock files (pnpm, yarn)
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
+
+# Node modules
+node_modules/
+
+# Documentation and guides (optional, keep if you want to include)
+# INSTALLATION.md
+# RELEASE.md
+# CONTRIBUTING.md
+# CODE_OF_CONDUCT.md
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+Jenkinsfile

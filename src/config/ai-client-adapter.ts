@@ -21,6 +21,7 @@ import { fileURLToPath } from 'url';
 
 import { AIProvider, AIModelConfig, AIProvidersConfig } from './types.js';
 import { createLogger } from '../utils/logger.js';
+import { resolveConfigPath } from '../utils/path-utils.js';
 
 // 创建AI适配器专用的日志实例
 const logger = createLogger('AI-Adapter');
@@ -42,47 +43,69 @@ export function loadAIProvidersConfig(forceReload = false): AIProvidersConfig {
     const currentFilePath = fileURLToPath(currentFileUrl);
     const currentDir = dirname(currentFilePath);
 
-    // 允许通过环境变量覆盖配置路径
-    const envConfigPath =
-      process.env.GAREN_MCP_CONFIG || process.env.CONFIG_PATH;
+    // 统一配置文件路径解析逻辑
+    // 优先级：
+    // 1. CI_MCP_CONFIG - 直接指定 config.json 文件路径
+    // 2. CI_MCP_DATA_DIR - 指定配置目录，拼接 config.json
+    // 3. GAREN_MCP_CONFIG, GAREN_MCP_DATA_DIR - 向后兼容
+    // 4. CONFIG_PATH - 通用配置路径
+    // 5. 当前工作目录的 ci-mcp-data/config.json
+    // 6. 相对于代码的 ../../ci-mcp-data/config.json
 
-    // 尝试多个可能的配置文件路径（按优先级从高到低）
-    const possiblePaths = [
-      ...(envConfigPath ? [envConfigPath] : []),
-      join(process.cwd(), 'data/config.json'), // 当前工作目录
-      join(currentDir, '../../data/config.json'), // 相对于当前文件
-    ];
+    const possiblePaths: string[] = [];
 
-    let configFilePath: string | null = null;
-    let configFileContent: string | null = null;
-
-    for (const path of possiblePaths) {
-      try {
-        logger.debug(`Trying config path: ${path}`);
-        configFileContent = readFileSync(path, 'utf-8');
-        configFilePath = path;
-        logger.info(`Successfully loaded config from: ${configFilePath}`);
-        break;
-      } catch (err) {
-        logger.debug(`Path not found: ${path}`);
-        continue;
-      }
+    // 优先级 1: 直接指定 config.json 文件
+    if (process.env.CI_MCP_CONFIG) {
+      possiblePaths.push(process.env.CI_MCP_CONFIG);
     }
 
-    if (!configFileContent || !configFilePath) {
+    // 优先级 2: 通过 CI_MCP_DATA_DIR 拼接
+    if (process.env.CI_MCP_DATA_DIR) {
+      possiblePaths.push(join(process.env.CI_MCP_DATA_DIR, 'config.json'));
+    }
+
+    // 优先级 3: 向后兼容的环境变量
+    if (process.env.GAREN_MCP_CONFIG) {
+      possiblePaths.push(process.env.GAREN_MCP_CONFIG);
+    }
+    if (process.env.GAREN_MCP_DATA_DIR) {
+      possiblePaths.push(join(process.env.GAREN_MCP_DATA_DIR, 'config.json'));
+    }
+    if (process.env.CONFIG_PATH) {
+      possiblePaths.push(process.env.CONFIG_PATH);
+    }
+
+    // 优先级 4-5: 默认路径
+    possiblePaths.push(
+      join(process.cwd(), 'ci-mcp-data/config.json'),
+      join(currentDir, '../../ci-mcp-data/config.json')
+    );
+
+    const configFilePath = resolveConfigPath(
+      ['CI_MCP_CONFIG', 'CI_MCP_DATA_DIR', 'GAREN_MCP_CONFIG', 'CONFIG_PATH'],
+      possiblePaths,
+      msg => logger.debug(msg)
+    );
+
+    if (!configFilePath) {
       throw new Error(
-        `Could not find config.json in any of the expected locations: ${possiblePaths.join(', ')}`
+        `无法在任何预期位置找到 config.json。请设置环境变量：\n` +
+          `  CI_MCP_DATA_DIR=/path/to/config/dir  (推荐)\n` +
+          `  CI_MCP_CONFIG=/path/to/config.json  (直接指定文件)\n` +
+          `尝试过的路径：${possiblePaths.join(', ')}`
       );
     }
 
+    logger.info(`成功加载配置文件: ${configFilePath}`);
+    const configFileContent = readFileSync(configFilePath, 'utf-8');
     const config = JSON.parse(configFileContent) as AIProvidersConfig;
 
     configCache = config;
-    logger.info(`Loaded ${config.providers.length} providers`);
+    logger.info(`已加载 ${config.providers.length} 个 AI 提供商`);
 
     return config;
   } catch (error) {
-    logger.error('Error loading config:', error);
+    logger.error('加载配置失败:', error);
     throw new Error(`Failed to load AI providers configuration: ${error}`);
   }
 }

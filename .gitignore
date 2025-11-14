@@ -13,9 +13,9 @@ build/
 .env.*.local
 
 # Private configuration (contains API keys)
-data/config.json
-data/components.json
-data/utils.json
+ci-mcp-data/config.json
+ci-mcp-data/components.json
+ci-mcp-data/utils.json
 
 # IDE files
 .vscode/

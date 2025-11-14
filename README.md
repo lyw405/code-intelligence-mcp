@@ -79,49 +79,108 @@ code-intelligence-mcp/
 │   ├── utils/                         # Utility functions
 │   │   ├── logger.ts                  # Logger utility
 │   │   ├── ai-caller.ts               # AI unified caller
+│   │   ├── path-utils.ts              # Path resolution utilities
 │   │   └── index.ts
 │   └── mcp-server.ts                  # MCP server main entry
-├── data/                              # Knowledge base data
-│   ├── components.json                # UI component knowledge base
-│   ├── utils.json                     # Utility method knowledge base
-│   └── config.json                    # AI model configuration
+├── ci-mcp-data/                       # Configuration data (user-specific)
+│   ├── components.example.json        # UI component knowledge base example
+│   ├── utils.example.json             # Utility method knowledge base example
+│   └── config.example.json            # AI model configuration example
 ├── scripts/                           # Script tools
-│   ├── start.sh                       # Startup script
-│   ├── test.js                        # Test script
-│   └── test-*.ts                      # Feature tests
+│   ├── setup.js                       # Setup script
+│   └── start.sh                       # Startup script
 ├── package.json
 ├── tsconfig.json
-└── mcp-config.json                    # MCP service configuration
+└── .npmignore                         # NPM publish exclusions
 ```
 
 ## Installation and Usage
 
-### Prerequisites
+### Method 1: Use with npx (Recommended)
+
+This is the recommended way for using the MCP server with AI IDEs like Claude Desktop.
+
+#### Step 1: Prepare Configuration Files
+
+Create a configuration directory (recommended location: `~/.config/ci-mcp`):
+
+```bash
+mkdir -p ~/.config/ci-mcp
+```
+
+Download or create the following three configuration files:
+
+1. **[`config.json`](./ci-mcp-data/config.example.json)** - AI model configuration
+2. **[`components.json`](./ci-mcp-data/components.example.json)** - UI component knowledge base
+3. **[`utils.json`](./ci-mcp-data/utils.example.json)** - Utility method knowledge base
+
+You can find example files in the npm package or repository.
+
+#### Step 2: Configure AI IDE
+
+Add to your AI IDE configuration (e.g., Claude Desktop's `claude_desktop_config.json`):
+
+```json
+{
+  "mcpServers": {
+    "code-intelligence": {
+      "command": "npx",
+      "args": ["-y", "code-intelligence-mcp"],
+      "env": {
+        "CI_MCP_DATA_DIR": "~/.config/ci-mcp"
+      }
+    }
+  }
+}
+```
+
+**Environment Variables:**
+
+- **`CI_MCP_DATA_DIR`** (Recommended): Specify the configuration directory, all three files will be loaded from this directory
+- **`CI_MCP_CONFIG`**: Directly specify the path to `config.json`
+- **`CI_MCP_COMPONENTS`**: Directly specify the path to `components.json`
+- **`CI_MCP_UTILS`**: Directly specify the path to `utils.json`
+
+**Path Formats Supported:**
+
+- Absolute path: `/Users/xxx/.config/ci-mcp`
+- Home directory: `~/.config/ci-mcp` or `$HOME/.config/ci-mcp`
+- Environment variables: `${MY_CONFIG_DIR}/ci-mcp`
+
+#### Step 3: Restart AI IDE
+
+Restart your AI IDE (e.g., Claude Desktop), and the MCP service will start automatically via npx.
+
+---
+
+### Method 2: Local Development
+
+#### Prerequisites
 
 **Configure Knowledge Base Data Files**
 
-The project requires manual configuration of the following data files:
+The project requires manual configuration of the following data files in `ci-mcp-data/` directory:
 
-1. **`data/config.json`** - AI model configuration (including API Key)
+1. **`ci-mcp-data/config.json`** - AI model configuration (including API Key)
 
    ```bash
-   cp data/config.example.json data/config.json
+   cp ci-mcp-data/config.example.json ci-mcp-data/config.json
    # Edit config.json and fill in your API Key
    ```
 
-2. **`data/components.json`** - UI component knowledge base
+2. **`ci-mcp-data/components.json`** - UI component knowledge base
 
    ```bash
-   cp data/components.example.json data/components.json
+   cp ci-mcp-data/components.example.json ci-mcp-data/components.json
    # Edit components.json based on your private component library
    ```
 
    - Add component information following the existing format: `description`, `import`, `relativePath`, etc.
 
-3. **`data/utils.json`** - Utility method knowledge base
+3. **`ci-mcp-data/utils.json`** - Utility method knowledge base
 
    ```bash
-   cp data/utils.example.json data/utils.json
+   cp ci-mcp-data/utils.example.json ci-mcp-data/utils.json
    # Edit utils.json based on your utility method library
    ```
 

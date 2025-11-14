@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import type { ComponentInfo } from '@/types/mcp-types.js';
-import { logger } from '@/utils/index.js';
+import { logger, resolveConfigPath } from '@/utils/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -23,7 +23,56 @@ export class ComponentKnowledgeBase {
    */
   private loadComponents() {
     try {
-      const dataPath = path.join(__dirname, '../../data/components.json');
+      // 统一配置文件路径解析逻辑
+      // 优先级：
+      // 1. CI_MCP_COMPONENTS - 直接指定 components.json 文件路径
+      // 2. CI_MCP_DATA_DIR - 指定配置目录，拼接 components.json
+      // 3. GAREN_MCP_DATA_DIR - 向后兼容
+      // 4. 当前工作目录的 ci-mcp-data/components.json
+      // 5. 相对于代码的 ../../ci-mcp-data/components.json
+
+      const possiblePaths: string[] = [];
+
+      // 优先级 1: 直接指定 components.json 文件
+      if (process.env.CI_MCP_COMPONENTS) {
+        possiblePaths.push(process.env.CI_MCP_COMPONENTS);
+      }
+
+      // 优先级 2: 通过 CI_MCP_DATA_DIR 拼接
+      if (process.env.CI_MCP_DATA_DIR) {
+        possiblePaths.push(
+          path.join(process.env.CI_MCP_DATA_DIR, 'components.json')
+        );
+      }
+
+      // 优先级 3: 向后兼容
+      if (process.env.GAREN_MCP_DATA_DIR) {
+        possiblePaths.push(
+          path.join(process.env.GAREN_MCP_DATA_DIR, 'components.json')
+        );
+      }
+
+      // 优先级 4-5: 默认路径
+      possiblePaths.push(
+        path.join(process.cwd(), 'ci-mcp-data/components.json'),
+        path.join(__dirname, '../../ci-mcp-data/components.json')
+      );
+
+      const dataPath = resolveConfigPath(
+        ['CI_MCP_COMPONENTS', 'CI_MCP_DATA_DIR', 'GAREN_MCP_DATA_DIR'],
+        possiblePaths,
+        msg => logger.debug(msg)
+      );
+
+      if (!dataPath) {
+        throw new Error(
+          `无法在任何预期位置找到 components.json。请设置环境变量：\n` +
+            `  CI_MCP_DATA_DIR=/path/to/config/dir  (推荐)\n` +
+            `  CI_MCP_COMPONENTS=/path/to/components.json  (直接指定文件)\n` +
+            `尝试过的路径：${possiblePaths.join(', ')}`
+        );
+      }
+
       const data = fs.readFileSync(dataPath, 'utf-8');
       const componentsObj = JSON.parse(data) as Record<
         string,
